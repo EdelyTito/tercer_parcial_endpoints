@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "76a26711-aaa2-41d0-b04e-faae2b9be061",
+		"name": "EdelyTito_Endpoints_asignados",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27234379",
+		"_collection_link": "https://www.postman.com/do-parcial/workspace/gestion-de-calidad/collection/27234379-76a26711-aaa2-41d0-b04e-faae2b9be061?action=share&source=collection_link&creator=27234379"
+	},
+	"item": [
+		{
+			"name": "obtener item raiz por child",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"El código de estado de la respuesta es 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El array de Children no debe estar vacío si existe\", function () {\r",
+							"    if (responseData.Children) {\r",
+							"        pm.expect(responseData.Children).to.be.an(\"array\").that.is.not.empty;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La propiedad 'Priority' debe ser un número dentro de un rango válido\", function () {\r",
+							"    if (responseData.Priority) {\r",
+							"        pm.expect(responseData.Priority).to.be.a(\"number\");\r",
+							"        pm.expect(responseData.Priority).to.be.at.least(1).and.to.be.below(10);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Todos los 'Children' deben tener un 'Id' válido\", function () {\r",
+							"    if (responseData.Children && responseData.Children.length > 0) {\r",
+							"        responseData.Children.forEach(child => {\r",
+							"            pm.expect(child.Id).to.be.a(\"number\");\r",
+							"            pm.expect(child.Id).to.be.above(0);\r",
+							"        });\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Todos los 'Children' deben tener el 'ParentId' igual al 'Id' principal\", function () {\r",
+							"    if (responseData.Children && responseData.Children.length > 0) {\r",
+							"        responseData.Children.forEach(child => {\r",
+							"            pm.expect(child.ParentId).to.equal(responseData.Id);\r",
+							"        });\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "pedropicapiedras@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password3}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/Items/11601169/RootItem.json",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"Items",
+						"11601169",
+						"RootItem.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener item raiz completado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El código de estado de la respuesta es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Checked es un booleano si existe\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    if (responseData.Checked !== undefined) {\r",
+							"        pm.expect(responseData.Checked).to.be.a('boolean', \"Checked debe ser un booleano\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El contenido es una cadena no vacía si existe\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    if (responseData.Content) {\r",
+							"        pm.expect(responseData.Content).to.be.a('string').and.to.have.lengthOf.at.least(1, \"El valor no debe estar vacío\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"DateStringPriority es un número si existe\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    if (responseData.DateStringPriority !== undefined) {\r",
+							"        pm.expect(responseData.DateStringPriority).to.be.a('number', \"DateStringPriority debe ser un número\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ItemType es un número dentro de un rango válido si existe\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    if (responseData.ItemType !== undefined) {\r",
+							"        pm.expect(responseData.ItemType).to.be.a('number');\r",
+							"        pm.expect(responseData.ItemType).to.be.within(0, 10, \"ItemType debe estar en el rango 0-10\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "pedropicapiedras@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password3}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/items/11601167/DoneRootItem.json",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"items",
+						"11601167",
+						"DoneRootItem.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener icon por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.text();\r",
+							"\r",
+							"pm.test(\"El código de estado de la respuesta es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El cuerpo de la respuesta contiene un formato XML válido\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/xml\", \"El Content-Type debe ser text/xml\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El tiempo de respuesta es menor a 3000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000, \"El tiempo de respuesta debe ser menor a 3000ms\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El Content-Type de la respuesta es text/xml\", function () {\r",
+							"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"    pm.expect(contentType).to.include(\"text/xml\", \"El Content-Type debe ser text/xml\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene un IconObject válido\", function () {\r",
+							"    if (responseData.includes(\"<APIError>\")) {\r",
+							"        pm.expect(responseData).to.include(\"<ErrorMessage>\", \"La respuesta es un error de la API\");\r",
+							"    } else {\r",
+							"        const xmlPattern = /<IconObject>\\s*<Id>\\d+<\\/Id>\\s*<URL>http:\\/\\/\\S+<\\/URL>\\s*<\\/IconObject>/;\r",
+							"        pm.expect(responseData).to.match(xmlPattern, \"La respuesta no tiene el formato de XML esperado\");\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "pedropicapiedras@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password3}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/icons/4.xml",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"icons",
+						"4.xml"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
