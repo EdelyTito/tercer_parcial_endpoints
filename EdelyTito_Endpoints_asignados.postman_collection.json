@@ -29,7 +29,7 @@
 							"pm.test(\"La propiedad 'Priority' debe ser un número dentro de un rango válido\", function () {\r",
 							"    if (responseData.Priority) {\r",
 							"        pm.expect(responseData.Priority).to.be.a(\"number\");\r",
-							"        pm.expect(responseData.Priority).to.be.at.least(1).and.to.be.below(10);\r",
+							"        pm.expect(responseData.Priority).to.be.at.least(1).and.to.be.below(5);\r",
 							"    }\r",
 							"});\r",
 							"\r",
@@ -233,6 +233,71 @@
 					"path": [
 						"icons",
 						"4.xml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IsAuthenticated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const parseString = require('xml2js').parseString;\r",
+							"const xmlData = pm.response.text();\r",
+							"\r",
+							"pm.test(\"El código de estado de la respuesta es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta es un valor booleano\", function () {\r",
+							"    parseString(xmlData, (err, result) => {\r",
+							"        const isAuthenticated = result.boolean;\r",
+							"        pm.expect(isAuthenticated).to.be.oneOf([\"true\", \"false\"]);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta es un XML válido\", function () {\r",
+							"    parseString(xmlData, (err, result) => {\r",
+							"        pm.expect(result).to.be.an('object');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene una etiqueta <boolean>\", function () {\r",
+							"    parseString(xmlData, (err, result) => {\r",
+							"        pm.expect(result.boolean).to.exist;\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta no contiene elementos inesperados\", function () {\r",
+							"    parseString(xmlData, (err, result) => {\r",
+							"        pm.expect(Object.keys(result).length).to.equal(1);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/authentication/isauthenticated.xml",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"authentication",
+						"isauthenticated.xml"
 					]
 				}
 			},
